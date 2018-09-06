@@ -19,7 +19,8 @@ namespace treenirepository.DataModels
       Id = exerciseDTO.Id;
       Name = exerciseDTO.Name;
       Created = exerciseDTO.Created != null ? exerciseDTO.Created : DateTime.Now;
-      
+      StartTime = exerciseDTO.StartTime;
+
       // when saving a new fully defined exercise we should also include the sections.
       // Sections = exerciseDTO.Sections.Select(s => new Section(s)).ToList();
 
@@ -31,6 +32,7 @@ namespace treenirepository.DataModels
     [Required]
     public DateTime Created { get; set; }
     [InverseProperty("Exercise")]
-    public ICollection<Section> Sections {get;set;}
+    public DateTime StartTime { get; set; }
+    public ICollection<Section> Sections { get; set; }
   }
 }
