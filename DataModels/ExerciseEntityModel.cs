@@ -25,6 +25,8 @@ namespace treenirepository.DataModels
     public virtual DbSet<Exercise> Exercises { get; set; }
     public virtual DbSet<User> Users { get; set; }
 
+    public DbSet<Section> Sections { get; set; }
+
     public async Task<int> SaveChangesAsync()
     {
       return await base.SaveChangesAsync(CancellationToken.None);

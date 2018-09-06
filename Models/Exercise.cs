@@ -3,9 +3,11 @@ namespace treenirepository.Models
 {
 
   using System;
+  using System.Collections.Generic;
+  using System.Linq;
   using System.Runtime.Serialization;
-  
-  [DataContract(Name="exercise")]
+
+  [DataContract(Name = "exercise")]
   public class Exercise
   {
     public Exercise()
@@ -17,15 +19,18 @@ namespace treenirepository.Models
       Name = exerciseData.Name;
       Created = exerciseData.Created != null ? exerciseData.Created : DateTime.Now;
       ContentData = exerciseData.ContentData;
+      Sections = exerciseData.Sections.Select(s => new Section(s)).ToList();
 
     }
-    [DataMember(Name="id")]
+    [DataMember(Name = "id")]
     public int Id { get; set; }
-    [DataMember(Name="name")]
+    [DataMember(Name = "name")]
     public string Name { get; set; }
-    [DataMember(Name="created")]
+    [DataMember(Name = "created")]
     public DateTime Created { get; set; }
-    [DataMember(Name="contentData")]
+    [DataMember(Name = "contentData")]
     public string ContentData { get; set; }
+    [DataMember(Name = "sections")]
+    public ICollection<Section> Sections { get; set; }
   }
 }

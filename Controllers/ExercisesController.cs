@@ -35,6 +35,7 @@ namespace treenirepository.Controllers
       {
         // db operation as async
         var exercises = await context.Exercises
+          .Include("Sections")
           .AsNoTracking()
           .ToListAsync();
 

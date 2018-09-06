@@ -3,9 +3,11 @@ namespace treenirepository.DataModels
 {
 
   using System;
+  using System.Collections.Generic;
   using System.ComponentModel.DataAnnotations;
   using System.ComponentModel.DataAnnotations.Schema;
-  
+  using System.Linq;
+
   [Table("Exercise", Schema = "dbo")]
   public class Exercise
   {
@@ -18,6 +20,8 @@ namespace treenirepository.DataModels
       Name = exerciseDTO.Name;
       Created = exerciseDTO.Created != null ? exerciseDTO.Created : DateTime.Now;
       ContentData = exerciseDTO.ContentData;
+      // we might want to leave this undone and handle updates on single sections.
+      // Sections = exerciseDTO.Sections.Select(s => new Section(s)).ToList();
 
     }
     [Key]
@@ -28,5 +32,7 @@ namespace treenirepository.DataModels
     public DateTime Created { get; set; }
     [Required]
     public string ContentData { get; set; }
+    [InverseProperty("Exercise")]
+    public ICollection<Section> Sections {get;set;}
   }
 }

@@ -10,6 +10,7 @@ namespace treenirepository.DataModels
   {
     DbSet<Exercise> Exercises { get; }
     DbSet<User> Users { get; }
+    DbSet<Section> Sections { get; }
 
     Task<int> SaveChangesAsync();
   }
