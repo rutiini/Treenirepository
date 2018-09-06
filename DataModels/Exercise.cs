@@ -19,8 +19,8 @@ namespace treenirepository.DataModels
       Id = exerciseDTO.Id;
       Name = exerciseDTO.Name;
       Created = exerciseDTO.Created != null ? exerciseDTO.Created : DateTime.Now;
-      ContentData = exerciseDTO.ContentData;
-      // we might want to leave this undone and handle updates on single sections.
+      
+      // when saving a new fully defined exercise we should also include the sections.
       // Sections = exerciseDTO.Sections.Select(s => new Section(s)).ToList();
 
     }
@@ -30,8 +30,6 @@ namespace treenirepository.DataModels
     public string Name { get; set; }
     [Required]
     public DateTime Created { get; set; }
-    [Required]
-    public string ContentData { get; set; }
     [InverseProperty("Exercise")]
     public ICollection<Section> Sections {get;set;}
   }

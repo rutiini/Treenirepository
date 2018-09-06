@@ -18,7 +18,6 @@ namespace treenirepository.Models
       Id = exerciseData.Id;
       Name = exerciseData.Name;
       Created = exerciseData.Created != null ? exerciseData.Created : DateTime.Now;
-      ContentData = exerciseData.ContentData;
       Sections = exerciseData.Sections.Select(s => new Section(s)).ToList();
 
     }
@@ -28,8 +27,6 @@ namespace treenirepository.Models
     public string Name { get; set; }
     [DataMember(Name = "created")]
     public DateTime Created { get; set; }
-    [DataMember(Name = "contentData")]
-    public string ContentData { get; set; }
     [DataMember(Name = "sections")]
     public ICollection<Section> Sections { get; set; }
   }
