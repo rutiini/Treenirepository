@@ -33,16 +33,16 @@ namespace treenirepository.Controllers
         [HttpPost]
         [Route("create")]
         [ProducesResponseType(typeof(IEnumerable<Models.Section>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateExerciseAsync([FromBody] Models.Section newSection)
         {
-            try
+            if(ModelState.IsValid)
             {
                 return Ok(await CreateSectionToDbAsync(newSection));
             }
-            catch(Exception e)
+            else
             {
-                // TODO: check whick error code is actually preferable in this case.
-                return UnprocessableEntity($"could not create database entity from {newSection} \n details: {e.StackTrace}");
+                return BadRequest(ModelState);
             }
         }
         
