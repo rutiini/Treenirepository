@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using treenirepository.Controllers;
 using treenirepository.DataModels;
 using Xunit;
 
@@ -16,6 +17,29 @@ namespace App.Tests
         /// </summary>
         public SectionsControllerTests()
         {
+            // can be used to initialize test context
+            initalizeTestDb();
+        }
+        
+        [Fact]
+        public async Task TestContextInitialization()
+        {
+                // use the context
+                var sections = await context.Sections.ToListAsync();
+                Assert.Equal(sections.Count, 1);
+        }
+
+        [Fact]
+        public async Task TestGet()
+        {
+            var ctrl = new SectionsController();
+
+            var result = await ctrl.Get(1);
+
+        }
+
+        private void initalizeTestDb()
+        {
             var options = new DbContextOptionsBuilder<ExerciseEntityModel>()
                 .UseInMemoryDatabase(databaseName: "testingdata")
                 .Options;
@@ -28,14 +52,6 @@ namespace App.Tests
                     ex
                     );
                 context.SaveChangesAsync();
-        }
-        
-        [Fact]
-        public async Task Test1()
-        {
-                // use the context
-                var sections = await context.Sections.ToListAsync();
-                Assert.Equal(sections.Count, 1);
         }
     }
 }
