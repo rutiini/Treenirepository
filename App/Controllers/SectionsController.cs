@@ -34,7 +34,7 @@ namespace treenirepository.Controllers
         [Route("create")]
         [ProducesResponseType(typeof(IEnumerable<Models.Section>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> CreateExerciseAsync([FromBody] Models.Section newSection)
+        public async Task<IActionResult> CreateSectionAsync([FromBody] Models.Section newSection)
         {
             if(ModelState.IsValid)
             {

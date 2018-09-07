@@ -11,6 +11,12 @@ namespace treenirepository.DataModels
   {
     public static string ConnectionString { get; set; }
 
+    /// <summary>
+    /// used for creating test contexts
+    /// </summary>
+    /// <value></value>
+    public static DbContextOptionsBuilder<ExerciseEntityModel> optionsBuilder {get; set;}
+
     //public ExerciseEntityModel() { }
     public static IExerciseEntityModel Create() => CreateDatabaseModel();
 
@@ -31,7 +37,6 @@ namespace treenirepository.DataModels
     {
       return await base.SaveChangesAsync(CancellationToken.None);
     }
-
     // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     // {
     //   if (!optionsBuilder.IsConfigured)
@@ -62,6 +67,10 @@ namespace treenirepository.DataModels
         builder.UseSqlServer(ConnectionString);
 
         return new ExerciseEntityModel(builder.Options);
+      }
+      else if(optionsBuilder != null)
+      {
+        return new ExerciseEntityModel(optionsBuilder.Options);
       }
       else
       {
