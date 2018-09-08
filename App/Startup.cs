@@ -1,5 +1,5 @@
 ﻿
-namespace treenirepository
+namespace Treenirepository
 {
 
   using System;
@@ -15,7 +15,7 @@ namespace treenirepository
   using Microsoft.Extensions.DependencyInjection;
   using Microsoft.Extensions.Logging;
   using Microsoft.Extensions.Options;
-  using treenirepository.DataModels;
+  using Treenirepository.DataModels;
 
   public class Startup
   {

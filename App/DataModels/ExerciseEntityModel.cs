@@ -1,6 +1,7 @@
 
-namespace treenirepository.DataModels
+namespace Treenirepository.DataModels
 {
+  using System;
   using System.Linq;
   using System.Threading;
   using System.Threading.Tasks;
@@ -10,22 +11,16 @@ namespace treenirepository.DataModels
   public class ExerciseEntityModel : DbContext, IExerciseEntityModel
   {
     public static string ConnectionString { get; set; }
-
+    
     /// <summary>
-    /// used for creating test contexts
+    /// Create function can be overwritten for testing purposes
     /// </summary>
-    /// <value></value>
-    public static DbContextOptionsBuilder<ExerciseEntityModel> optionsBuilder {get; set;}
-
-    //public ExerciseEntityModel() { }
-    public static IExerciseEntityModel Create() => CreateDatabaseModel();
+    /// <returns><see cref="IExerciseEntityModel"/></returns>
+    public static Func<IExerciseEntityModel> Create { get; set; } = CreateDatabaseModel;
 
     public ExerciseEntityModel(DbContextOptions<ExerciseEntityModel> options)
     : base(options)
     {
-      // var extension = options.FindExtension<SqlServerOptionsExtension>();
-
-      // ConnectionString = extension.ConnectionString;
     }
 
     public virtual DbSet<Exercise> Exercises { get; set; }
@@ -37,19 +32,7 @@ namespace treenirepository.DataModels
     {
       return await base.SaveChangesAsync(CancellationToken.None);
     }
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //   if (!optionsBuilder.IsConfigured)
-    //   {
-    //     var opts = optionsBuilder.Options;
-    //     var extension = opts.FindExtension<SqlServerOptionsExtension>();
-
-    //     ConnectionString = extension.ConnectionString;
-    //   }
-
-    // }
-
-    /// Validation? -> can be done with annotations well enough
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<Exercise>(entity =>
@@ -67,10 +50,6 @@ namespace treenirepository.DataModels
         builder.UseSqlServer(ConnectionString);
 
         return new ExerciseEntityModel(builder.Options);
-      }
-      else if(optionsBuilder != null)
-      {
-        return new ExerciseEntityModel(optionsBuilder.Options);
       }
       else
       {

@@ -1,5 +1,5 @@
 
-namespace treenirepository.Controllers
+namespace Treenirepository.Controllers
 {
   using System;
   using System.Collections.Generic;
@@ -8,8 +8,8 @@ namespace treenirepository.Controllers
   using System.Threading.Tasks;
   using Microsoft.AspNetCore.Mvc;
   using Microsoft.EntityFrameworkCore;
-  using treenirepository.DataModels;
-  using treenirepository.Models;
+  using Treenirepository.DataModels;
+  using Treenirepository.Models;
 
   [Route("api/[controller]")]
   public class ExercisesController : Controller
@@ -24,24 +24,144 @@ namespace treenirepository.Controllers
     [HttpGet]
     [Route("{id:int}")]
     [ProducesResponseType(typeof(IEnumerable<Models.Exercise>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> Get(int id)
     {
+      var result = await GetExerciseFromDbAsync(id);
       try
       {
-        return Ok(await GetExerciseFromDbAsync(id));
+        if (result != null)
+        {
+          return Ok(result);
+        }
+        else
+        {
+          return NotFound($"no section exists with id {id}");
+        }
       }
-      catch
+      catch (System.Exception)
       {
-        return NotFound($"no section exists with id {id}");
+        return StatusCode((int)HttpStatusCode.InternalServerError);
       }
     }
 
     [HttpPost]
     [Route("create")]
-    [ProducesResponseType(typeof(IEnumerable<Models.Exercise>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(Models.Exercise), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> CreateExerciseAsync([FromBody] Models.Exercise newExercise)
     {
-      return Ok(await CreateExerciseToDbAsync(newExercise));
+      try
+      {
+        var result = await CreateExerciseToDbAsync(newExercise);
+        return Ok(result);
+      }
+      catch (System.Exception e)
+      {
+        System.Console.WriteLine(e.Message);
+        return StatusCode((int)HttpStatusCode.InternalServerError);
+      }
+    }
+
+    [HttpPost]
+    [Route("update")]
+    [ProducesResponseType(typeof(Models.Exercise), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.UnprocessableEntity)]
+    public async Task<IActionResult> UpdateExerciseAsync([FromBody] Models.Exercise updatedExercise)
+    {
+      try
+      {
+        var updateResult = await UpdateExerciseToDbAsync(updatedExercise);
+        if (updateResult != null)
+        {
+          return Ok(updateResult);
+        }
+        else
+        {
+          return NotFound($"could not find exercise with id {updatedExercise.Id} to update.");
+        }
+      }
+      catch (Exception)
+      {
+        return UnprocessableEntity($"could not update exercise with given values.");
+      }
+    }
+
+    [HttpGet]
+    [Route("delete/{id:int}")]
+    [ProducesResponseType((int)HttpStatusCode.NoContent)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> Delete(int id)
+    {
+      var result = await DeleteExerciseFromDbAsync(id);
+      try
+      {
+        if (result)
+        {
+          return NoContent();
+        }
+        else
+        {
+          return NotFound($"no section exists with id {id}");
+        }
+      }
+      catch (System.Exception)
+      {
+        return StatusCode((int)HttpStatusCode.InternalServerError);
+      }
+    }
+
+    private async Task<bool> DeleteExerciseFromDbAsync(int id)
+    {
+      if (id > 0)
+      {
+        using (IExerciseEntityModel context = ExerciseEntityModel.Create())
+        {
+          var exercise = await context.Exercises.SingleAsync(e => e.Id == id);
+          if (exercise != null)
+          {
+            context.Exercises.Remove(exercise);
+            await context.SaveChangesAsync();
+
+            return true;
+          }
+          else
+          {
+            return false;
+          }
+        }
+      }
+      else
+      {
+        return false;
+      }
+    }
+
+    private async Task<Models.Exercise> UpdateExerciseToDbAsync(Models.Exercise updatedExercise)
+    {
+      // validation?
+      if (updatedExercise != null && updatedExercise.Id > 0)
+      {
+        using (IExerciseEntityModel context = ExerciseEntityModel.Create())
+        {
+          var dbExercise = context.Exercises
+          .Single(e => e.Id == updatedExercise.Id);
+          dbExercise.Name = updatedExercise.Name;
+          dbExercise.StartTime = updatedExercise.StartTime;
+          // we don't add sections when updating an exercise, that's adding a section!
+          if (dbExercise.Sections == null)
+          {
+              dbExercise.Sections = new List<DataModels.Section>();
+          }
+          await context.SaveChangesAsync();
+          return new Models.Exercise(dbExercise);
+        }
+      }
+      else
+      {
+        return null;
+      }
     }
 
     [HttpGet]
@@ -90,21 +210,28 @@ namespace treenirepository.Controllers
           .Include("Sections")
           .AsNoTracking()
           .SingleAsync(e => e.Id == id);
-
-        return new Models.Exercise(exercise);
+        if (exercise != null)
+        {
+          return new Models.Exercise(exercise);
+        }
+        else
+        {
+          return null;
+        }
       }
     }
 
-    private async Task<IEnumerable<Models.Exercise>> CreateExerciseToDbAsync(Models.Exercise newExercise)
+    private async Task<Models.Exercise> CreateExerciseToDbAsync(Models.Exercise newExercise)
     {
       using (IExerciseEntityModel context = ExerciseEntityModel.Create())
       {
-        await context.Exercises.AddAsync(new DataModels.Exercise(newExercise));
+        var newDbExercise = new DataModels.Exercise(newExercise);
+        await context.Exercises.AddAsync(newDbExercise);
 
         await context.SaveChangesAsync();
 
+        return new Models.Exercise(newDbExercise);
       }
-      return newExercise as IEnumerable<Models.Exercise>;
     }
   }
 

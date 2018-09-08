@@ -1,5 +1,5 @@
 
-namespace treenirepository.DataModels
+namespace Treenirepository.DataModels
 {
 
   using System;
@@ -20,9 +20,10 @@ namespace treenirepository.DataModels
       Name = exerciseDTO.Name;
       Created = exerciseDTO.Created != null ? exerciseDTO.Created : DateTime.Now;
       StartTime = exerciseDTO.StartTime;
-
       // when saving a new fully defined exercise we should also include the sections.
-      // Sections = exerciseDTO.Sections.Select(s => new Section(s)).ToList();
+      Sections = exerciseDTO.Sections != null 
+      ? exerciseDTO.Sections.Select(s => new Section(s)).ToList()
+      : new List<Section>();
 
     }
     [Key]

@@ -1,5 +1,5 @@
 
-namespace treenirepository.Models
+namespace Treenirepository.Models
 {
 
   using System;

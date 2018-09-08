@@ -1,6 +1,6 @@
 
 
-namespace treenirepository.DataModels
+namespace Treenirepository.DataModels
 {
   using System;
   using System.Threading.Tasks;
