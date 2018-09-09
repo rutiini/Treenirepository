@@ -48,6 +48,7 @@ namespace Treenirepository.Models
 
     // TODO: weigh whether we should even expose this property to users, we only use sections under an exercise for now..
     [DataMember(Name = "exerciseId")]
+    [Range(1, int.MaxValue, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
     public int ExerciseId { get; set; }
   }
 }

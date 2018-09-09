@@ -34,6 +34,7 @@ namespace Treenirepository.DataModels
     public int SetupDuration { get; set; }
     [Required]
     public int Color { get; set; }
+    [Required]
     public int ExerciseId { get; set; }
     [ForeignKey(nameof(ExerciseId))]
     public Exercise Exercise { get; set; }

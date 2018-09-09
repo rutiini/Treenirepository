@@ -37,14 +37,15 @@ namespace Treenirepository.Controllers
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> CreateSectionAsync([FromBody] Models.Section newSection)
     {
-      // if (ModelState.IsValid)
-      // {
-        return Ok(await CreateSectionToDbAsync(newSection));
-      // }
-      // else
-      // {
-      //   return BadRequest(ModelState);
-      // }
+      var result = await CreateSectionToDbAsync(newSection);
+      if(result != null)
+      {
+        return Ok(result);
+      }
+      else
+      {
+          return BadRequest("Could not save section.");
+      }
     }
 
     [HttpPost]
@@ -61,7 +62,58 @@ namespace Treenirepository.Controllers
       {
         return BadRequest("Could not link the section to the given exercise.");
       }
-        
+
+    }
+
+    [HttpDelete]
+    [Route("{id:int}")]
+    [ProducesResponseType((int)HttpStatusCode.NoContent)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> Delete(int id)
+    {
+      try
+      {
+        var result = await DeleteSectionFromDbAsync(id);
+        if (result)
+        {
+          return NoContent();
+        }
+        else
+        {
+          return NotFound($"no section exists with id {id}");
+        }
+      }
+      catch (Exception)
+      {
+        // log stack?
+        return StatusCode((int)HttpStatusCode.InternalServerError);
+      }
+    }
+
+    private async Task<bool> DeleteSectionFromDbAsync(int id)
+    {
+      if (id > 0)
+      {
+        using (IExerciseEntityModel context = ExerciseEntityModel.Create())
+        {
+          var exercise = await context.Exercises.SingleAsync(e => e.Id == id);
+          if (exercise != null)
+          {
+            context.Exercises.Remove(exercise);
+            await context.SaveChangesAsync();
+
+            return true;
+          }
+          else
+          {
+            return false;
+          }
+        }
+      }
+      else
+      {
+        return false;
+      }
     }
 
     private async Task<Models.Section> UpdateSectionToDbAsync(Models.Section updatedSection)
@@ -102,6 +154,12 @@ namespace Treenirepository.Controllers
       {
         var newDbSection = new DataModels.Section(newSection);
         newDbSection.Id = 0;
+
+        if (context.Exercises.Any(e => e.Id == newDbSection.ExerciseId))
+        {
+          return null;
+        }
+
         await context.Sections.AddAsync(newDbSection);
 
         await context.SaveChangesAsync();

@@ -85,7 +85,8 @@ namespace Treenirepository.Controllers
       }
       catch (Exception)
       {
-        return UnprocessableEntity($"could not update exercise with given values.");
+        // log stack?
+        return StatusCode((int)HttpStatusCode.InternalServerError);
       }
     }
 
@@ -95,9 +96,9 @@ namespace Treenirepository.Controllers
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Delete(int id)
     {
-      var result = await DeleteExerciseFromDbAsync(id);
       try
       {
+        var result = await DeleteExerciseFromDbAsync(id);
         if (result)
         {
           return NoContent();
@@ -107,8 +108,9 @@ namespace Treenirepository.Controllers
           return NotFound($"no section exists with id {id}");
         }
       }
-      catch (System.Exception)
+      catch (Exception)
       {
+        // log stack?
         return StatusCode((int)HttpStatusCode.InternalServerError);
       }
     }
@@ -153,7 +155,7 @@ namespace Treenirepository.Controllers
           // we don't add sections when updating an exercise, that's adding a section!
           if (dbExercise.Sections == null)
           {
-              dbExercise.Sections = new List<DataModels.Section>();
+            dbExercise.Sections = new List<DataModels.Section>();
           }
           await context.SaveChangesAsync();
           return new Models.Exercise(dbExercise);
