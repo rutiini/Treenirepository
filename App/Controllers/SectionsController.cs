@@ -12,6 +12,7 @@ namespace Treenirepository.Controllers
   using Treenirepository.Models;
 
   [Route("api/[controller]")]
+  [ApiController]
   public class SectionsController : Controller
   {
     [HttpGet]
@@ -36,14 +37,14 @@ namespace Treenirepository.Controllers
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> CreateSectionAsync([FromBody] Models.Section newSection)
     {
-      if (ModelState.IsValid)
-      {
+      // if (ModelState.IsValid)
+      // {
         return Ok(await CreateSectionToDbAsync(newSection));
-      }
-      else
-      {
-        return BadRequest(ModelState);
-      }
+      // }
+      // else
+      // {
+      //   return BadRequest(ModelState);
+      // }
     }
 
     [HttpPost]
@@ -52,16 +53,15 @@ namespace Treenirepository.Controllers
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> UpdateSectionAsync([FromBody] Models.Section updatedSection)
     {
-      // TODO: ModelState does not seem reliable source of validation results here. Investigate.
-      if (ModelState.IsValid)
+      try
       {
         return Ok(await UpdateSectionToDbAsync(updatedSection));
-        
       }
-      else
+      catch (System.Exception)
       {
-        return BadRequest(ModelState);
+        return BadRequest("Could not link the section to the given exercise.");
       }
+        
     }
 
     private async Task<Models.Section> UpdateSectionToDbAsync(Models.Section updatedSection)
@@ -101,6 +101,7 @@ namespace Treenirepository.Controllers
       using (IExerciseEntityModel context = ExerciseEntityModel.Create())
       {
         var newDbSection = new DataModels.Section(newSection);
+        newDbSection.Id = 0;
         await context.Sections.AddAsync(newDbSection);
 
         await context.SaveChangesAsync();

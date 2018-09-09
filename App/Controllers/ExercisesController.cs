@@ -12,6 +12,7 @@ namespace Treenirepository.Controllers
   using Treenirepository.Models;
 
   [Route("api/[controller]")]
+  [ApiController]
   public class ExercisesController : Controller
   {
     [HttpGet]
@@ -88,8 +89,8 @@ namespace Treenirepository.Controllers
       }
     }
 
-    [HttpGet]
-    [Route("delete/{id:int}")]
+    [HttpDelete]
+    [Route("{id:int}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Delete(int id)

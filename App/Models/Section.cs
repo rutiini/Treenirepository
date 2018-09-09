@@ -8,7 +8,7 @@ namespace Treenirepository.Models
   using System.Runtime.Serialization;
 
   [DataContract(Name = "section")]
-  public class Section : IValidatableObject
+  public class Section
   {
     public Section()
     {
@@ -26,36 +26,28 @@ namespace Treenirepository.Models
     }
     [DataMember(Name = "id")]
     public int Id { get; set; }
+
     [DataMember(Name = "name")]
+    [StringLength(100, MinimumLength = 2, ErrorMessage = "Length of {0} must be between {2} and {1} characters.")]
     public string Name { get; set; }
+
     [DataMember(Name = "description")]
     public string Description { get; set; }
+
     [DataMember(Name = "duration")]
-    [Range(1,1000,ErrorMessage="Duration is is out of allowed range (1-1000)")]
+    [Range(1, 1000, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
     public int Duration { get; set; }
+
     [DataMember(Name = "setupDuration")]
+    [Range(0, 1000, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
     public int SetupDuration { get; set; }
+
     [DataMember(Name = "color")]
+    [Range(0, 50, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
     public int Color { get; set; }
+
+    // TODO: weigh whether we should even expose this property to users, we only use sections under an exercise for now..
     [DataMember(Name = "exerciseId")]
     public int ExerciseId { get; set; }
-
-    // this is probably too fancy
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-    {
-      var input = validationContext.ObjectInstance as Section;
-      if (input.Name.Length == 0)
-      {
-        yield return new ValidationResult("Name is invalid", new[] { "Name" });
-      }
-      else if (input.Duration <= 0)
-      {
-        yield return new ValidationResult("Duration is invalid", new[] { "Duration" });
-      }
-      else if (input.ExerciseId <= 0)
-      {
-        yield return new ValidationResult("ExerciseId is invalid", new[] { "ExerciseId" });
-      }
-    }
   }
 }
