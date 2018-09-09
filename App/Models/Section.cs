@@ -31,6 +31,7 @@ namespace Treenirepository.Models
     [DataMember(Name = "description")]
     public string Description { get; set; }
     [DataMember(Name = "duration")]
+    [Range(1,1000,ErrorMessage="Duration is is out of allowed range (1-1000)")]
     public int Duration { get; set; }
     [DataMember(Name = "setupDuration")]
     public int SetupDuration { get; set; }
@@ -39,6 +40,7 @@ namespace Treenirepository.Models
     [DataMember(Name = "exerciseId")]
     public int ExerciseId { get; set; }
 
+    // this is probably too fancy
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
       var input = validationContext.ObjectInstance as Section;
@@ -55,6 +57,5 @@ namespace Treenirepository.Models
         yield return new ValidationResult("ExerciseId is invalid", new[] { "ExerciseId" });
       }
     }
-    // public Exercise? Exercise { get; set; }
   }
 }

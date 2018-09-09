@@ -46,6 +46,47 @@ namespace Treenirepository.Controllers
       }
     }
 
+    [HttpPost]
+    [Route("update")]
+    [ProducesResponseType(typeof(IEnumerable<Models.Section>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> UpdateSectionAsync([FromBody] Models.Section updatedSection)
+    {
+      // TODO: ModelState does not seem reliable source of validation results here. Investigate.
+      if (ModelState.IsValid)
+      {
+        return Ok(await UpdateSectionToDbAsync(updatedSection));
+        
+      }
+      else
+      {
+        return BadRequest(ModelState);
+      }
+    }
+
+    private async Task<Models.Section> UpdateSectionToDbAsync(Models.Section updatedSection)
+    {
+      if (updatedSection != null && updatedSection.Id > 0)
+      {
+        using (IExerciseEntityModel context = ExerciseEntityModel.Create())
+        {
+          var dbSection = context.Sections
+          .Single(s => s.Id == updatedSection.Id);
+          dbSection.Name = updatedSection.Name;
+          dbSection.Duration = updatedSection.Duration;
+          dbSection.Color = updatedSection.Color;
+          dbSection.SetupDuration = updatedSection.SetupDuration;
+
+          await context.SaveChangesAsync();
+          return new Models.Section(dbSection);
+        }
+      }
+      else
+      {
+        return null;
+      }
+    }
+
     private async Task<Models.Section> GetSectionFromDbAsync(int id)
     {
       using (IExerciseEntityModel context = ExerciseEntityModel.Create())

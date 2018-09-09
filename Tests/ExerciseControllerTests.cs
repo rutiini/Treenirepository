@@ -1,28 +1,29 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Treenirepository.Controllers;
-using Treenirepository.DataModels;
-using Xunit;
 
 namespace App.Tests
 {
-  public class TreenirepositoryContrrollerTests
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Threading.Tasks;
+  using Microsoft.AspNetCore.Mvc;
+  using Microsoft.EntityFrameworkCore;
+  using Treenirepository.Controllers;
+  using Treenirepository.DataModels;
+  using Xunit;
+  public class ExerciseContrrollerTests
   {
 
     /// <summary>
     /// Set up the inmemory database for testing.
     /// </summary>
-    public TreenirepositoryContrrollerTests()
+    public ExerciseContrrollerTests()
     {
       // can be used to initialize test context
       ExerciseEntityModel.Create = () => GetTestDb();
     }
+
     [Fact]
-    public async Task CreateExerciseAsync_CreateSectionAsync_Success()
+    public async Task CreateExerciseAsync_Success()
     {
       var sectionCtrl = new SectionsController();
       var exerciseCtrl = new ExercisesController();
@@ -115,21 +116,21 @@ namespace App.Tests
 
       // create in sequence
       string sectionName = "Section 1";
-        var section1 = new Treenirepository.Models.Section
-        {
-          Name = sectionName,
-          Description = "testing object",
-          Duration = 10,
-          SetupDuration = 2
-        };
-        string section2Name = "Section 2";
-        var section2 = new Treenirepository.Models.Section
-        {
-          Name = section2Name,
-          Description = "testing object",
-          Duration = 15,
-          SetupDuration = 0
-        };
+      var section1 = new Treenirepository.Models.Section
+      {
+        Name = sectionName,
+        Description = "testing object",
+        Duration = 10,
+        SetupDuration = 2
+      };
+      string section2Name = "Section 2";
+      var section2 = new Treenirepository.Models.Section
+      {
+        Name = section2Name,
+        Description = "testing object",
+        Duration = 15,
+        SetupDuration = 0
+      };
       // create exercise with sections
       string exerciseName = "test exercise";
       int exerciseId = ((await exerciseCtrl.CreateExerciseAsync(
@@ -137,7 +138,7 @@ namespace App.Tests
         {
           Name = exerciseName,
           StartTime = DateTime.Now,
-          Sections = new List<Treenirepository.Models.Section>(){section1, section2}
+          Sections = new List<Treenirepository.Models.Section>() { section1, section2 }
         }) as OkObjectResult)
           .Value as Treenirepository.Models.Exercise)
           .Id;
@@ -146,7 +147,7 @@ namespace App.Tests
       Assert.NotNull(result);
 
       var payload = result.Value as Treenirepository.Models.Exercise;
-      
+
       // check the returned objects references and integrity
       Assert.True(payload.Name == exerciseName);
       Assert.True(payload.Sections.Count == 2);
@@ -166,18 +167,21 @@ namespace App.Tests
       Assert.True(payload.Id == 1);
       string updatedExerciseName = "modified exercise";
       payload.Name = updatedExerciseName;
+
+      // this does not cause problems but does not add sections either. 
+      // Adding sections is done through the sections controller.
       payload.Sections.Add(
         new Treenirepository.Models.Section
         {
-          Name = "added section", 
-          Description = "lets see if this causes problems kjeh kjeh", 
-          Duration = 12, 
-          SetupDuration = 1, 
-          Color = 3 
+          Name = "added section",
+          Description = "lets see if this causes problems kjeh kjeh",
+          Duration = 12,
+          SetupDuration = 1,
+          Color = 3
         });
 
       result = await exerciseCtrl.UpdateExerciseAsync(payload) as OkObjectResult;
-      payload =  result.Value as Treenirepository.Models.Exercise;
+      payload = result.Value as Treenirepository.Models.Exercise;
       Assert.True(payload.Name == updatedExerciseName);
     }
 
