@@ -207,9 +207,7 @@ namespace App.Tests
       }
 
       var results = await Task.WhenAll(taskList.ToArray());
-
-      Assert.IsType(typeof(OkObjectResult),results.Last());
-      Assert.IsType(typeof(OkObjectResult),results.First());
+      
       // check if any of the calls resulted in other than OkObjectResult
       Assert.True(!taskList.Any(t => (t.Result as OkObjectResult) == null));
       Assert.True(taskList.Count == amount);
