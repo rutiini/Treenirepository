@@ -163,7 +163,8 @@ namespace App.Tests
         SetupDuration = 1,
         Duration = 10,
         Description = "this section is missing duration info and ExerciseId",
-        Color = 3
+        Color = 3,
+        ExerciseId = 1
       };
         System.Console.WriteLine($"starting request {item}");
         taskList.Add(sectionCtrl.CreateSectionAsync(newSection));

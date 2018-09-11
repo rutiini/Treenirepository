@@ -155,7 +155,7 @@ namespace Treenirepository.Controllers
         var newDbSection = new DataModels.Section(newSection);
         newDbSection.Id = 0;
 
-        if (context.Exercises.Any(e => e.Id == newDbSection.ExerciseId))
+        if (!context.Exercises.Any(e => e.Id == newDbSection.ExerciseId))
         {
           return null;
         }
