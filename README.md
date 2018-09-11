@@ -1,4 +1,7 @@
+
 # Treenirepository
+[![Build Status](https://travis-ci.org/rutiini/Treenirepository.svg?branch=master)](https://travis-ci.org/rutiini/Treenirepository)
+
 A backend service for hosting shared exercise data for the treenikello app
 
 ## ExercisesController
