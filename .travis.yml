@@ -3,4 +3,4 @@ solution: treenirepository.sln
 mono: none
 dotnet: 2.1.2
 script:
- - dotnet test
+ - dotnet test .\Tests\treenirepository.tests.csproj
