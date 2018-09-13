@@ -1,4 +1,3 @@
-
 namespace Treenirepository.Controllers
 {
   using System;
@@ -11,10 +10,18 @@ namespace Treenirepository.Controllers
   using Treenirepository.DataModels;
   using Treenirepository.Models;
 
+  /// <summary>
+  /// Controller for Section database manipulation.
+  /// </summary>
   [Route("api/[controller]")]
   [ApiController]
   public class SectionsController : Controller
   {
+    /// <summary>
+    /// Get a single section from the database by its Id.
+    /// </summary>
+    /// <param name="id">Id of section.</param>
+    /// <returns>Single <see cref="Models.Section"/>.</returns>
     [HttpGet]
     [Route("{id:int}")]
     [ProducesResponseType(typeof(Models.Section), (int)HttpStatusCode.OK)]
@@ -31,6 +38,11 @@ namespace Treenirepository.Controllers
       }
     }
 
+    /// <summary>
+    /// Create a new section to database.
+    /// </summary>
+    /// <param name="newSection">new <see cref="Models.Section"/> object.</param>
+    /// <returns><see cref="Models.Section"/> with database id.</returns>
     [HttpPost]
     [Route("create")]
     [ProducesResponseType(typeof(IEnumerable<Models.Section>), (int)HttpStatusCode.OK)]
@@ -48,6 +60,11 @@ namespace Treenirepository.Controllers
       }
     }
 
+    /// <summary>
+    /// Update a section in the database.
+    /// </summary>
+    /// <param name="updatedSection">modified <see cref="Models.Section"/> object.</param>
+    /// <returns>updated <see cref="Models.Section"/>.</returns>
     [HttpPost]
     [Route("update")]
     [ProducesResponseType(typeof(IEnumerable<Models.Section>), (int)HttpStatusCode.OK)]
@@ -65,6 +82,11 @@ namespace Treenirepository.Controllers
 
     }
 
+    /// <summary>
+    /// Delete a section by its id.
+    /// </summary>
+    /// <param name="id">Id of the section to be deleted.</param>
+    /// <returns>204 no content http response.</returns>
     [HttpDelete]
     [Route("{id:int}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
@@ -122,15 +144,15 @@ namespace Treenirepository.Controllers
       {
         using (IExerciseEntityModel context = ExerciseEntityModel.Create())
         {
-          var dbSection = context.Sections
+          var dataSection = context.Sections
           .Single(s => s.Id == updatedSection.Id);
-          dbSection.Name = updatedSection.Name;
-          dbSection.Duration = updatedSection.Duration;
-          dbSection.Color = updatedSection.Color;
-          dbSection.SetupDuration = updatedSection.SetupDuration;
+          dataSection.Name = updatedSection.Name;
+          dataSection.Duration = updatedSection.Duration;
+          dataSection.Color = updatedSection.Color;
+          dataSection.SetupDuration = updatedSection.SetupDuration;
 
           await context.SaveChangesAsync();
-          return new Models.Section(dbSection);
+          return new Models.Section(dataSection);
         }
       }
       else

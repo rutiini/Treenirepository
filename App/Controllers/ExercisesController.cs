@@ -1,4 +1,3 @@
-
 namespace Treenirepository.Controllers
 {
   using System;
@@ -11,10 +10,17 @@ namespace Treenirepository.Controllers
   using Treenirepository.DataModels;
   using Treenirepository.Models;
 
+  /// <summary>
+  /// Controller for Exercise database manipulation.
+  /// </summary>
   [Route("api/[controller]")]
   [ApiController]
   public class ExercisesController : Controller
   {
+    /// <summary>
+    /// Get all saved exercises from the database.
+    /// </summary>
+    /// <returns>List of <see cref="Models.Exercise"/>.</returns>
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<Models.Exercise>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Get()
@@ -22,6 +28,11 @@ namespace Treenirepository.Controllers
       return Ok(await GetExercisesFromDbAsync());
     }
 
+    /// <summary>
+    /// Get single exercise by Id parameter.
+    /// </summary>
+    /// <param name="id">Id of the exercise.</param>
+    /// <returns>Single <see cref="Models.Exercise"/>.</returns>
     [HttpGet]
     [Route("{id:int}")]
     [ProducesResponseType(typeof(IEnumerable<Models.Exercise>), (int)HttpStatusCode.OK)]
@@ -47,6 +58,11 @@ namespace Treenirepository.Controllers
       }
     }
 
+    /// <summary>
+    /// Create a new Exercise to database.
+    /// </summary>
+    /// <param name="newExercise"><see cref="Models.Exercise"/> object.</param>
+    /// <returns><see cref="Models.Exercise"/> object with a db Id added.</returns>
     [HttpPost]
     [Route("create")]
     [ProducesResponseType(typeof(Models.Exercise), (int)HttpStatusCode.OK)]
@@ -64,6 +80,11 @@ namespace Treenirepository.Controllers
       }
     }
 
+    /// <summary>
+    /// Update Exercise properties in the database. Note that sections are updated through the sections api.
+    /// </summary>
+    /// <param name="updatedExercise">Modified <see cref="Models.Exercise"/> object.</param>
+    /// <returns>Updated <see cref="Models.Exercise"/> object.</returns>
     [HttpPost]
     [Route("update")]
     [ProducesResponseType(typeof(Models.Exercise), (int)HttpStatusCode.OK)]
@@ -90,6 +111,11 @@ namespace Treenirepository.Controllers
       }
     }
 
+    /// <summary>
+    /// Delete an exercise from database by its Id.
+    /// </summary>
+    /// <param name="id">Id of the exercise to be deleted.</param>
+    /// <returns>204 no content http response.</returns>
     [HttpDelete]
     [Route("{id:int}")]
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
@@ -148,17 +174,17 @@ namespace Treenirepository.Controllers
       {
         using (IExerciseEntityModel context = ExerciseEntityModel.Create())
         {
-          var dbExercise = context.Exercises
+          var dataExercise = context.Exercises
           .Single(e => e.Id == updatedExercise.Id);
-          dbExercise.Name = updatedExercise.Name;
-          dbExercise.StartTime = updatedExercise.StartTime;
+          dataExercise.Name = updatedExercise.Name;
+          dataExercise.StartTime = updatedExercise.StartTime;
           // we don't add sections when updating an exercise, that's adding a section!
-          if (dbExercise.Sections == null)
+          if (dataExercise.Sections == null)
           {
-            dbExercise.Sections = new List<DataModels.Section>();
+            dataExercise.Sections = new List<DataModels.Section>();
           }
           await context.SaveChangesAsync();
-          return new Models.Exercise(dbExercise);
+          return new Models.Exercise(dataExercise);
         }
       }
       else
@@ -167,6 +193,11 @@ namespace Treenirepository.Controllers
       }
     }
 
+    /// <summary>
+    /// Get all the sections that belong to the Exercise with parameter Id.
+    /// </summary>
+    /// <param name="exerciseId">Id of exercise.</param>
+    /// <returns>List of <see cref="Models.Section"/> objects.</returns>
     [HttpGet]
     [Route("{exerciseId:int}/sections")]
     [ProducesResponseType(typeof(IEnumerable<Models.Section>), (int)HttpStatusCode.OK)]

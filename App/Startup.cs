@@ -17,16 +17,30 @@ namespace Treenirepository
   using Microsoft.Extensions.Options;
   using Treenirepository.DataModels;
 
+  /// <summary>
+  /// Startup class for setting up services and configurations.
+  /// </summary>
   public class Startup
   {
+    /// <summary>
+    /// Standard startup method.
+    /// </summary>
+    /// <param name="configuration"></param>
     public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
     }
 
+    /// <summary>
+    /// Standard startup method. Gets the connectionstring from settings and sets it in the controller property.
+    /// </summary>
+    /// <value></value>
     public IConfiguration Configuration { get; }
 
-    // This method gets called by the runtime. Use this method to add services to the container.
+    /// <summary>
+    /// This method gets called by the runtime. Use this method to add services to the container.
+    /// </summary>
+    /// <param name="services"></param>
     public void ConfigureServices(IServiceCollection services)
     {
       var connection = Configuration["Production:ConnectionString"];
@@ -37,7 +51,11 @@ namespace Treenirepository
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    /// <summary>
+    /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    /// </summary>
+    /// <param name="app"></param>
+    /// <param name="env">Environment (Debug/Release)</param>
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
       if (env.IsDevelopment())

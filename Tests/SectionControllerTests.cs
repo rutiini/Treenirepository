@@ -129,7 +129,7 @@ namespace App.Tests
 
       foreach (var item in list)
       {
-        System.Console.WriteLine($"starting request {item}");
+        // System.Console.WriteLine($"starting request {item}");
         taskList.Add(sectionCtrl.Get(1));
       }
 
@@ -166,7 +166,7 @@ namespace App.Tests
         Color = 3,
         ExerciseId = 1
       };
-        System.Console.WriteLine($"starting request {item}");
+        // System.Console.WriteLine($"starting request {item}");
         taskList.Add(sectionCtrl.CreateSectionAsync(newSection));
       }
 
@@ -207,7 +207,7 @@ namespace App.Tests
       }
 
       var results = await Task.WhenAll(taskList.ToArray());
-      
+
       // check if any of the calls resulted in other than OkObjectResult
       Assert.True(!taskList.Any(t => (t.Result as OkObjectResult) == null),"Failed update request(s) found");
       Assert.True(taskList.Count == amount,"Amount of results does not match amount of requests");
