@@ -164,7 +164,7 @@ namespace App.Tests
       Assert.NotNull(result);
 
       var payload = result.Value as Treenirepository.Models.Exercise;
-      Assert.True(payload.Id == 1);
+      Assert.True(payload.Id == 1, "Unexpected Id");
       string updatedExerciseName = "modified exercise";
       payload.Name = updatedExerciseName;
 
@@ -182,7 +182,7 @@ namespace App.Tests
 
       result = await exerciseCtrl.UpdateExerciseAsync(payload) as OkObjectResult;
       payload = result.Value as Treenirepository.Models.Exercise;
-      Assert.True(payload.Name == updatedExerciseName);
+      Assert.True(payload.Name == updatedExerciseName,"Unexpected exercise name");
     }
 
     private bool testDbPopulated = false;

@@ -33,7 +33,7 @@ namespace App.Tests
       .Value as Treenirepository.Models.Section);
 
       Assert.NotNull(result);
-      Assert.True(result.Id > 0);
+      Assert.True(result.Id > 0,"Result object had invalid Id");
     }
 
     [Fact]
@@ -67,7 +67,7 @@ namespace App.Tests
       Assert.NotNull(result);
 
       var payload = result.Value as Treenirepository.Models.Section;
-      Assert.True(payload.Name == sectionName);
+      Assert.True(payload.Name == sectionName, "Unexpected section name");
     }
 
     [Fact]
@@ -85,7 +85,7 @@ namespace App.Tests
       .Value as Treenirepository.Models.Section);
 
       Assert.NotNull(section);
-      Assert.True(section.Name == modifiedName);
+      Assert.True(section.Name == modifiedName, "Unexpected section name");
     }
 
     [Fact]
@@ -135,8 +135,8 @@ namespace App.Tests
 
       var results = await Task.WhenAll(taskList.ToArray());
       // check if any of the calls resulted in other than OkObjectResult
-      Assert.True(!taskList.Any(t => (t.Result as OkObjectResult) == null));
-      Assert.True(taskList.Count == amount);
+      Assert.True(!taskList.Any(t => (t.Result as OkObjectResult) == null),"Failed get request(s) found");
+      Assert.True(taskList.Count == amount,"Amount of results does not match amount of requests");
     }
 
     /// <summary>
@@ -172,8 +172,8 @@ namespace App.Tests
 
       var results = await Task.WhenAll(taskList.ToArray());
       // check if any of the calls resulted in other than OkObjectResult
-      Assert.True(!taskList.Any(t => (t.Result as OkObjectResult) == null));
-      Assert.True(taskList.Count == amount);
+      Assert.True(!taskList.Any(t => (t.Result as OkObjectResult) == null),"Failed create request(s) found");
+      Assert.True(taskList.Count == amount,"Amount of results does not match amount of requests");
     }
 
     /// <summary>
@@ -202,20 +202,20 @@ namespace App.Tests
         Description = "this section is missing duration info and ExerciseId",
         Color = 3
       };
-        System.Console.WriteLine($"starting request {item}");
+        // System.Console.WriteLine($"starting request {item}");
         taskList.Add(sectionCtrl.UpdateSectionAsync(newSection));
       }
 
       var results = await Task.WhenAll(taskList.ToArray());
       
       // check if any of the calls resulted in other than OkObjectResult
-      Assert.True(!taskList.Any(t => (t.Result as OkObjectResult) == null));
-      Assert.True(taskList.Count == amount);
+      Assert.True(!taskList.Any(t => (t.Result as OkObjectResult) == null),"Failed update request(s) found");
+      Assert.True(taskList.Count == amount,"Amount of results does not match amount of requests");
 
       var formattedResult = results.Last() as OkObjectResult;
       Assert.NotNull(formattedResult);
       var payload = formattedResult.Value as Treenirepository.Models.Section;
-      Assert.True(payload.Id == 1);
+      Assert.True(payload.Id == 1,"Unexpected Id");
     }
 
     // /// <summary>

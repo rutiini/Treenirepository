@@ -5,6 +5,8 @@ mono: none
 dotnet: 2.1.400
 install:
 - dotnet restore
+- nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
 script:
 - dotnet build
 - dotnet test Tests/treenirepository.tests.csproj
+- xbuild /p:Configuration=Release solution-name.sln
