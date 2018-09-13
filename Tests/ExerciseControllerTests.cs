@@ -149,8 +149,8 @@ namespace App.Tests
       var payload = result.Value as Treenirepository.Models.Exercise;
 
       // check the returned objects references and integrity
-      Assert.True(payload.Name == exerciseName, "Exercise name was not what expected");
-      Assert.True(payload.Sections.Count == 2,"Unexpected amount of sections");
+      Assert.True(payload.Name == exerciseName, "Exercise name was not what expected")
+      Assert.Equal(payload.Sections.Count,2);
       Assert.True(payload.Sections.First().ExerciseId == payload.Id, "Section link is mapped wrong or missing");
     }
 
