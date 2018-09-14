@@ -59,13 +59,15 @@ namespace App.Tests
       Assert.NotNull(result);
 
       dynamic payload = result.Value as Treenirepository.Models.Exercise;
-      Assert.True(payload.Name == exerciseName);
+      
+      Assert.Equal(payload.Name, exerciseName);
 
       result = await sectionCtrl.Get(sectionId) as OkObjectResult;
       Assert.NotNull(result);
 
       payload = result.Value as Treenirepository.Models.Section;
-      Assert.True(payload.Name == sectionName);
+      
+      Assert.Equal(payload.Name, sectionName);
     }
 
     [Fact]
@@ -101,12 +103,12 @@ namespace App.Tests
 
         });
 
-      Assert.True(createdExerciseId != 0);
+      Assert.NotEqual(createdExerciseId, 0);
       var result = await exerciseCtrl.Get(createdExerciseId) as OkObjectResult;
       Assert.NotNull(result);
 
       var payload = result.Value as Treenirepository.Models.Exercise;
-      Assert.True(payload.Name == createdExerciseName);
+      Assert.Equal(payload.Name, createdExerciseName);
     }
 
     [Fact]
@@ -149,9 +151,9 @@ namespace App.Tests
       var payload = result.Value as Treenirepository.Models.Exercise;
 
       // check the returned objects references and integrity
-      Assert.True(payload.Name == exerciseName, "Exercise name was not what expected");
+      Assert.Equal(payload.Name,exerciseName);
       Assert.Equal(payload.Sections.Count,2);
-      Assert.True(payload.Sections.First().ExerciseId == payload.Id, "Section link is mapped wrong or missing");
+      Assert.Equal(payload.Sections.First().ExerciseId, payload.Id);
     }
 
     [Fact]
@@ -164,7 +166,7 @@ namespace App.Tests
       Assert.NotNull(result);
 
       var payload = result.Value as Treenirepository.Models.Exercise;
-      Assert.True(payload.Id == 1, "Unexpected Id");
+      Assert.Equal(payload.Id, 1);
       string updatedExerciseName = "modified exercise";
       payload.Name = updatedExerciseName;
 
@@ -182,7 +184,7 @@ namespace App.Tests
 
       result = await exerciseCtrl.UpdateExerciseAsync(payload) as OkObjectResult;
       payload = result.Value as Treenirepository.Models.Exercise;
-      Assert.True(payload.Name == updatedExerciseName,"Unexpected exercise name");
+      Assert.Equal(payload.Name,updatedExerciseName);
     }
 
     private bool testDbPopulated = false;
