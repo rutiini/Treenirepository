@@ -1,3 +1,6 @@
+// <copyright file="IExerciseEntityModel.cs" company="rutiini">
+// Created by Esa Ruissalo
+// </copyright>
 namespace Treenirepository.DataModels
 {
   using System;
@@ -10,27 +13,27 @@ namespace Treenirepository.DataModels
   public interface IExerciseEntityModel : IDisposable
   {
     /// <summary>
-    /// Access to Exercises objects in the database.
+    /// Gets Exercises objects in the database.
     /// </summary>
-    /// <value></value>
+    /// <value>DbSet of Exercises.</value>
     DbSet<Exercise> Exercises { get; }
 
     /// <summary>
-    /// Access to Users objects in the database.
+    /// Gets Users objects in the database.
     /// </summary>
-    /// <value></value>
+    /// <value>DbSet of Users.</value>
     DbSet<User> Users { get; }
 
     /// <summary>
-    /// Access to Sections objects in the database.
+    /// Gets Sections objects in the database.
     /// </summary>
-    /// <value></value>
+    /// <value>DbSet of Sections.</value>
     DbSet<Section> Sections { get; }
 
     /// <summary>
     /// Perform an asynchronous save of the context to the database.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Int that indicates task result.</returns>
     Task<int> SaveChangesAsync();
   }
 }

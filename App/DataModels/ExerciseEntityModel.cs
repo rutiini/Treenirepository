@@ -1,3 +1,6 @@
+// <copyright file="ExerciseEntityModel.cs" company="rutiini">
+// Created by Esa Ruissalo
+// </copyright>
 namespace Treenirepository.DataModels
 {
   using System;
@@ -11,23 +14,26 @@ namespace Treenirepository.DataModels
   public class ExerciseEntityModel : DbContext, IExerciseEntityModel
   {
     /// <summary>
-    /// Database connection string property used to configure the context. 
+    /// Initializes a new instance of the <see cref="ExerciseEntityModel"/> class.
+    /// </summary>
+    /// <param name="options">Context options <see cref="DbContextOptions"/>.</param>
+    public ExerciseEntityModel(DbContextOptions<ExerciseEntityModel> options)
+    : base(options)
+    {
+    }
+
+    /// <summary>
+    /// Gets or sets the database connection string property used to configure the context.
     /// Internal functionality will handle rest of the necessary configurations.
     /// </summary>
     /// <value>A valid connectionstring.</value>
     public static string ConnectionString { get; set; }
 
     /// <summary>
-    /// Create function can be overwritten for testing purposes.
+    /// Gets or sets a function which can be overwritten for testing purposes.
     /// </summary>
-    /// <returns><see cref="IExerciseEntityModel"/>.</returns>
+    /// <value>Function for that returns an instance of the entity model such as <see cref="CreateDatabaseModel()"/>.</value>
     public static Func<IExerciseEntityModel> Create { get; set; } = CreateDatabaseModel;
-
-    /// <inheritdoc/>
-    public ExerciseEntityModel(DbContextOptions<ExerciseEntityModel> options)
-    : base(options)
-    {
-    }
 
     /// <inheritdoc/>
     public virtual DbSet<Exercise> Exercises { get; set; }
@@ -47,15 +53,15 @@ namespace Treenirepository.DataModels
     /// <summary>
     /// Experimental validator method.
     /// </summary>
-    /// <param name="modelBuilder"><see cref="ModelBuilder"/>.</param>
+    /// <param name="modelBuilder">Model builder for the context.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       modelBuilder.Entity<Exercise>(entity =>
         {
           entity.Property(e => e.Name).IsRequired();
-        }
-      );
+        });
     }
+
     private static IExerciseEntityModel CreateDatabaseModel()
     {
       if (ConnectionString != null)

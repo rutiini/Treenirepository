@@ -1,3 +1,6 @@
+// <copyright file="ExercisesController.cs" company="rutiini">
+// Created by Esa Ruissalo
+// </copyright>
 namespace Treenirepository.Controllers
 {
   using System;
@@ -141,6 +144,20 @@ namespace Treenirepository.Controllers
       }
     }
 
+    /// <summary>
+    /// Get all the sections that belong to the Exercise with parameter Id.
+    /// </summary>
+    /// <param name="exerciseId">Id of exercise.</param>
+    /// <returns>List of <see cref="Models.Section"/> objects.</returns>
+    [HttpGet]
+    [Route("{exerciseId:int}/sections")]
+    [ProducesResponseType(typeof(IEnumerable<Models.Section>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> GetExerciseSections(int exerciseId)
+    {
+      return Ok(await GetExerciseSectionsFromDbAsync(exerciseId));
+    }
+
     private async Task<bool> DeleteExerciseFromDbAsync(int id)
     {
       if (id > 0)
@@ -178,11 +195,13 @@ namespace Treenirepository.Controllers
           .Single(e => e.Id == updatedExercise.Id);
           dataExercise.Name = updatedExercise.Name;
           dataExercise.StartTime = updatedExercise.StartTime;
+
           // we don't add sections when updating an exercise, that's adding a section!
           if (dataExercise.Sections == null)
           {
             dataExercise.Sections = new List<DataModels.Section>();
           }
+
           await context.SaveChangesAsync();
           return new Models.Exercise(dataExercise);
         }
@@ -191,20 +210,6 @@ namespace Treenirepository.Controllers
       {
         return null;
       }
-    }
-
-    /// <summary>
-    /// Get all the sections that belong to the Exercise with parameter Id.
-    /// </summary>
-    /// <param name="exerciseId">Id of exercise.</param>
-    /// <returns>List of <see cref="Models.Section"/> objects.</returns>
-    [HttpGet]
-    [Route("{exerciseId:int}/sections")]
-    [ProducesResponseType(typeof(IEnumerable<Models.Section>), (int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    public async Task<IActionResult> GetExerciseSections(int exerciseId)
-    {
-      return Ok(await GetExerciseSectionsFromDbAsync(exerciseId));
     }
 
     private async Task<IEnumerable<Models.Section>> GetExerciseSectionsFromDbAsync(int exerciseId)
@@ -235,6 +240,7 @@ namespace Treenirepository.Controllers
           new Models.Exercise(e));
       }
     }
+
     private async Task<Models.Exercise> GetExerciseFromDbAsync(int id)
     {
       using (IExerciseEntityModel context = ExerciseEntityModel.Create())
@@ -268,5 +274,4 @@ namespace Treenirepository.Controllers
       }
     }
   }
-
 }

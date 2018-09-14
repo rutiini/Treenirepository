@@ -1,20 +1,20 @@
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Treenirepository.Controllers;
-using Treenirepository.DataModels;
-using Xunit;
-
+// <copyright file="SectionCotrollerTests.cs" company="rutiini">
+// Created by Esa Ruissalo
+// </copyright>
 namespace App.Tests
 {
-
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Net.Http;
+  using System.Text;
+  using System.Threading.Tasks;
+  using Microsoft.AspNetCore.Mvc;
+  using Microsoft.EntityFrameworkCore;
+  using Newtonsoft.Json;
+  using Treenirepository.Controllers;
+  using Treenirepository.DataModels;
+  using Xunit;
   public class SectionCotrollerTests
   {
 
@@ -33,7 +33,7 @@ namespace App.Tests
       .Value as Treenirepository.Models.Section);
 
       Assert.NotNull(result);
-      Assert.True(result.Id > 0,"Result object had invalid Id");
+      Assert.True(result.Id > 0, "Result object had invalid Id");
     }
 
     [Fact]
@@ -135,7 +135,7 @@ namespace App.Tests
 
       var results = await Task.WhenAll(taskList.ToArray());
       // check if any of the calls resulted in other than OkObjectResult
-      Assert.False(taskList.Any(t => (t.Result as OkObjectResult) == null),"Failed get request(s) found");
+      Assert.False(taskList.Any(t => (t.Result as OkObjectResult) == null), "Failed get request(s) found");
       Assert.Equal(taskList.Count, amount);
     }
 
@@ -172,7 +172,7 @@ namespace App.Tests
 
       var results = await Task.WhenAll(taskList.ToArray());
       // check if any of the calls resulted in other than OkObjectResult
-      Assert.False(taskList.Any(t => (t.Result as OkObjectResult) == null),"Failed create request(s) found");
+      Assert.False(taskList.Any(t => (t.Result as OkObjectResult) == null), "Failed create request(s) found");
       Assert.Equal(taskList.Count, amount);
     }
 
@@ -209,13 +209,13 @@ namespace App.Tests
       var results = await Task.WhenAll(taskList.ToArray());
 
       // check if any of the calls resulted in other than OkObjectResult
-      Assert.False(taskList.Any(t => (t.Result as OkObjectResult) == null),"Failed update request(s) found");
+      Assert.False(taskList.Any(t => (t.Result as OkObjectResult) == null), "Failed update request(s) found");
       Assert.Equal(taskList.Count, amount);
 
       var formattedResult = results.Last() as OkObjectResult;
       Assert.NotNull(formattedResult);
       var payload = formattedResult.Value as Treenirepository.Models.Section;
-      Assert.Equal(payload.Id, 1);
+      Assert.Equal(1, payload.Id);
     }
 
     // /// <summary>

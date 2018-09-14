@@ -1,3 +1,6 @@
+// <copyright file="SectionsController.cs" company="rutiini">
+// Created by Esa Ruissalo
+// </copyright>
 namespace Treenirepository.Controllers
 {
   using System;
@@ -50,13 +53,13 @@ namespace Treenirepository.Controllers
     public async Task<IActionResult> CreateSectionAsync([FromBody] Models.Section newSection)
     {
       var result = await CreateSectionToDbAsync(newSection);
-      if(result != null)
+      if (result != null)
       {
         return Ok(result);
       }
       else
       {
-          return BadRequest("Could not save section.");
+        return BadRequest("Could not save section.");
       }
     }
 
@@ -79,7 +82,6 @@ namespace Treenirepository.Controllers
       {
         return BadRequest("Could not link the section to the given exercise.");
       }
-
     }
 
     /// <summary>
@@ -190,5 +192,4 @@ namespace Treenirepository.Controllers
       }
     }
   }
-
 }

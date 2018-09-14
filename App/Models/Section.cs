@@ -1,6 +1,8 @@
+// <copyright file="Section.cs" company="rutiini">
+// Created by Esa Ruissalo
+// </copyright>
 namespace Treenirepository.Models
 {
-
   using System;
   using System.Collections.Generic;
   using System.ComponentModel.DataAnnotations;
@@ -13,6 +15,7 @@ namespace Treenirepository.Models
   public class Section
   {
     /// <summary>
+    /// Initializes a new instance of the <see cref="Section"/> class.
     /// Default constructor.
     /// </summary>
     public Section()
@@ -20,9 +23,10 @@ namespace Treenirepository.Models
     }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="Section"/> class.
     /// Helper constructor used to transform <see cref="DataModels.Section"/> objects to DTOs.
     /// </summary>
-    /// <param name="sectionData">A <see cref="DataModels.Section"/> object</param>
+    /// <param name="sectionData">A <see cref="DataModels.Section"/> object.</param>
     public Section(DataModels.Section sectionData)
     {
       Id = sectionData.Id;
@@ -32,20 +36,19 @@ namespace Treenirepository.Models
       Color = sectionData.Color;
       ExerciseId = sectionData.ExerciseId;
       Description = sectionData.Description;
-
     }
 
     /// <summary>
     /// Gets or sets the Id of the Section.
     /// </summary>
-    /// <value></value>
+    /// <value>int property: (database) Id.</value>
     [DataMember(Name = "id")]
     public int Id { get; set; }
 
     /// <summary>
     /// Gets or sets the Name of the Section.
     /// </summary>
-    /// <value></value>
+    /// <value>string property: Name.</value>
     [DataMember(Name = "name")]
     [StringLength(100, MinimumLength = 2, ErrorMessage = "Length of {0} must be between {2} and {1} characters.")]
     public string Name { get; set; }
@@ -53,23 +56,23 @@ namespace Treenirepository.Models
     /// <summary>
     /// Gets or sets the Description of the Section.
     /// </summary>
-    /// <value></value>
+    /// <value>string property: Description.</value>
     [DataMember(Name = "description")]
     public string Description { get; set; }
 
     /// <summary>
     /// Gets or sets the Duration of the Section.
     /// </summary>
-    /// <value></value>
+    /// <value>int property: Duration.</value>
     [DataMember(Name = "duration")]
     [Range(1, 1000, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
     public int Duration { get; set; }
 
     /// <summary>
     /// Gets or sets the SetupDuration of the Section.
-    /// see <see cref="DataModels.Section.SetupDuration"/> for more details
+    /// see <see cref="DataModels.Section.SetupDuration"/> for more details.
     /// </summary>
-    /// <value></value>
+    /// <value>int property: SetupDuration.</value>
     [DataMember(Name = "setupDuration")]
     [Range(0, 1000, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
     public int SetupDuration { get; set; }
@@ -78,7 +81,7 @@ namespace Treenirepository.Models
     /// Gets or sets the Color of the Section.
     /// see <see cref="DataModels.Section.Color"/> for more details.
     /// </summary>
-    /// <value></value>
+    /// <value>int property: Color.</value>
     [DataMember(Name = "color")]
     [Range(0, 50, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
     public int Color { get; set; }
@@ -87,7 +90,7 @@ namespace Treenirepository.Models
     /// Gets or sets the ExerciseId for the section. This propery links the section to an exercise.
     /// TODO: weigh whether we should even expose this property to users, we only use sections under an exercise for now..
     /// </summary>
-    /// <value></value>
+    /// <value>int property: ExerciseId.</value>
     [DataMember(Name = "exerciseId")]
     [Range(1, int.MaxValue, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
     public int ExerciseId { get; set; }

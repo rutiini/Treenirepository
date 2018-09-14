@@ -1,4 +1,6 @@
-
+// <copyright file="ExerciseContrrollerTests.cs" company="rutiini">
+// Created by Esa Ruissalo
+// </copyright>
 namespace App.Tests
 {
   using System;
@@ -103,7 +105,7 @@ namespace App.Tests
 
         });
 
-      Assert.NotEqual(createdExerciseId, 0);
+      Assert.NotEqual(0, createdExerciseId);
       var result = await exerciseCtrl.Get(createdExerciseId) as OkObjectResult;
       Assert.NotNull(result);
 
@@ -152,7 +154,7 @@ namespace App.Tests
 
       // check the returned objects references and integrity
       Assert.Equal(payload.Name,exerciseName);
-      Assert.Equal(payload.Sections.Count,2);
+      Assert.Equal(2, payload.Sections.Count);
       Assert.Equal(payload.Sections.First().ExerciseId, payload.Id);
     }
 
@@ -166,7 +168,7 @@ namespace App.Tests
       Assert.NotNull(result);
 
       var payload = result.Value as Treenirepository.Models.Exercise;
-      Assert.Equal(payload.Id, 1);
+      Assert.Equal(1, payload.Id);
       string updatedExerciseName = "modified exercise";
       payload.Name = updatedExerciseName;
 

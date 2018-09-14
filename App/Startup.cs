@@ -1,7 +1,8 @@
-﻿
+﻿// <copyright file="Startup.cs" company="rutiini">
+// Created by Esa Ruissalo
+// </copyright>
 namespace Treenirepository
 {
-
   using System;
   using System.Collections.Generic;
   using System.Linq;
@@ -23,29 +24,29 @@ namespace Treenirepository
   public class Startup
   {
     /// <summary>
-    /// Standard startup method.
+    /// Initializes a new instance of the <see cref="Startup"/> class.
     /// </summary>
-    /// <param name="configuration"></param>
+    /// <param name="configuration">App configurations.</param>
     public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
     }
 
     /// <summary>
-    /// Standard startup method. Gets the connectionstring from settings and sets it in the controller property.
+    /// Gets the connectionstring from settings and sets it in the controller property.
     /// </summary>
-    /// <value></value>
+    /// <value>Configuration property: getter.</value>
     public IConfiguration Configuration { get; }
 
     /// <summary>
     /// This method gets called by the runtime. Use this method to add services to the container.
     /// </summary>
-    /// <param name="services"></param>
+    /// <param name="services">Services that should be configured.</param>
     public void ConfigureServices(IServiceCollection services)
     {
       var connection = Configuration["Production:ConnectionString"];
 
-      //services.AddDbContext<ExerciseEntityModel>(options => options.UseSqlServer(connection));
+      // services.AddDbContext<ExerciseEntityModel>(options => options.UseSqlServer(connection));
       ExerciseEntityModel.ConnectionString = connection;
 
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -54,8 +55,8 @@ namespace Treenirepository
     /// <summary>
     /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     /// </summary>
-    /// <param name="app"></param>
-    /// <param name="env">Environment (Debug/Release)</param>
+    /// <param name="app">Application builder for configuring application request pipeline.</param>
+    /// <param name="env">Environment (Debug/Release).</param>
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
     {
       if (env.IsDevelopment())
@@ -65,6 +66,5 @@ namespace Treenirepository
 
       app.UseMvc();
     }
-
   }
 }
