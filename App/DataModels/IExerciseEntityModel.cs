@@ -1,4 +1,4 @@
-// <copyright file="IExerciseEntityModel.cs" company="rutiini">
+﻿// <copyright file="IExerciseEntityModel.cs" company="rutiini">
 // Created by Esa Ruissalo
 // </copyright>
 namespace Treenirepository.DataModels

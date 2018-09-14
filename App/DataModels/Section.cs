@@ -1,4 +1,4 @@
-// <copyright file="Section.cs" company="rutiini">
+﻿// <copyright file="Section.cs" company="rutiini">
 // Created by Esa Ruissalo
 // </copyright>
 namespace Treenirepository.DataModels

@@ -1,4 +1,4 @@
-// <copyright file="Exercise.cs" company="rutiini">
+﻿// <copyright file="Exercise.cs" company="rutiini">
 // Created by Esa Ruissalo
 // </copyright>
 namespace Treenirepository.Models

@@ -1,4 +1,4 @@
-// <copyright file="SectionsController.cs" company="rutiini">
+﻿// <copyright file="SectionsController.cs" company="rutiini">
 // Created by Esa Ruissalo
 // </copyright>
 namespace Treenirepository.Controllers
